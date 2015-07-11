@@ -1,0 +1,161 @@
+.editable-wrap {
+    width: 87%;
+}
+.editable-wrap .editable-input {
+    width: 60%;
+}
+.list-group-item {
+    padding-left: 6px;
+}
+.ticket-details .glyphicon-pencil {
+    visibility: hidden;
+}
+.ticket-details {
+    border: #ffffff solid 1px;
+    margin: 15px 0px;
+}
+.ticket-details h4{
+    margin: 0px 0px 3px 0px;
+}
+
+/*
+.ticket-details:hover {
+    border: #f0f0f0 solid 1px;
+    cursor: pointer;
+}
+.ticket-details:hover .glyphicon-pencil {
+    visibility: visible;
+
+}
+*/
+
+#vote-controls {
+    z-index: 1;
+}
+#vote-controls:hover {
+    z-index: 1000;
+}
+
+#jira-tickets {
+    height: 450px;
+    overflow-y: scroll;
+    border: 1px solid #ddd;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
+#jira-tickets .selected-ticket {
+    background-color: rgb(232, 232, 250);
+}
+
+#jira-tickets .list-group-item {
+    border: none;
+}
+
+/* Sticky footer styles
+     -------------------------------------------------- */
+
+html,
+body {
+    height: 100%;
+    overflow: hidden;
+    /* The html and body elements cannot have any padding or margin. */
+}
+
+/* Wrapper for page content to push down footer */
+#wrap {
+    /* min-height: 100%;*/
+    /* height: auto !important; */
+    height: 100%;
+    /* Negative indent footer by it's height */
+    margin: 0 auto -140px;
+}
+
+/* Set the fixed height of the footer here */
+#push,
+#footer {
+       height: 140px;
+}
+
+/* Lastly, apply responsive CSS fixes as necessary */
+@media (max-width: 767px) {
+    #footer {
+        margin-left: -20px;
+        margin-right: -20px;
+        padding-left: 20px;
+         padding-right: 20px;
+    }
+}
+
+#footer .ng-hide-add { animation:0.5s slideOutDown ease; }
+#footer .ng-hide-remove { animation:0.5s slideInUp ease; }
+
+@-webkit-keyframes slideOutDown {
+    0% {
+        opacity: 1;
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+
+    100% {
+        opacity: 0;
+        visibility: hidden;
+        -webkit-transform: translate3d(0, 200%, 0);
+        transform: translate3d(0, 200%, 0);
+    }
+}
+
+@keyframes slideOutDown {
+    0% {
+        opacity: 1;
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+
+    100% {
+        opacity: 0;
+        visibility: hidden;
+        -webkit-transform: translate3d(0, 200%, 0);
+        transform: translate3d(0, 200%, 0);
+    }
+}
+
+.slideOutDown {
+    -webkit-animation-name: slideOutDown;
+    animation-name: slideOutDown;
+}
+
+@-webkit-keyframes slideInUp {
+    0% {
+        opacity: 0;
+        -webkit-transform: translate3d(0, 200%, 0);
+        transform: translate3d(0, 200%, 0);
+        visibility: visible;
+    }
+
+    100% {
+        opacity: 1;
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+@keyframes slideInUp {
+    0% {
+        opacity: 0;
+        -webkit-transform: translate3d(0, 200%, 0);
+        transform: translate3d(0, 200%, 0);
+        visibility: visible;
+    }
+
+    100% {
+        opacity: 1;
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+.slideInUp {
+    -webkit-animation-name: slideInUp;
+    animation-name: slideInUp;
+}

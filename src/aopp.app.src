@@ -1,0 +1,15 @@
+{'application', 'aopp',
+ [
+  {'description', ""},
+  {'vsn', "1"},
+  {'registered', []},
+  {'applications',
+   [
+    'kernel', 'stdlib', 'crypto',
+    'cowboy', 'compiler', 'lager',
+    'syntax_tools'
+   ]},
+  {'mod', {'aopp_app', []}},
+  {'env', []}
+ ]
+}.

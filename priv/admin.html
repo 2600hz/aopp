@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AOPP</title>
+
+    <link rel="shortcut icon" href="assets/img/fav.ico" />
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="assets/js/html5shiv.min.js"></script>
+    <script type="text/javascript" src="assets/js/respond.min.js"></script>
+    <![endif]-->
+
+    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/xeditable.css"/>
+    <link rel="stylesheet" type="text/css" href="assets/css/angular-growl.css"/>
+    <link rel="stylesheet" type="text/css" href="assets/css/cards.css"/>
+    <link rel="stylesheet" type="text/css" href="assets/css/aopp.css"/>
+
+    <script type="text/javascript" src="assets/js/jquery-2.1.3.min.js"></script>
+    <script type="text/javascript" src="assets/js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="assets/js/TweenMax.min.js"></script>
+
+    <script type="text/javascript" src="assets/js/angular.min.js"></script>
+    <script type="text/javascript" src="assets/js/xeditable.js"></script>
+    <script type="text/javascript" src="assets/js/angular-growl.js"></script>
+    <script type="text/javascript" src="assets/js/angular-animate.js"></script>
+    <script type="text/javascript" src="assets/js/ng-websocket.js"></script>
+
+    <script type="text/javascript" src="assets/js/team-member.js"></script>
+    <script type="text/javascript" src="assets/js/scrum-master.js"></script>
+  </head>
+  <body ng-app="scrum-master" style="margin: 5px;">
+    <div growl></div>
+
+    <div id="wrap">
+      <div class="container-fluid">
+        <div class="row-fluid">
+
+          <!-- Start left column-->
+          <div class="col-md-3">
+
+            <!-- Start timer widget -->
+            <div class="panel panel-primary" ng-controller="TimerCtrl">
+              <div class="panel-heading">
+                <h3 class="panel-title">Timer</h3>
+              </div>
+              <div class="panel-body">
+                <div class="text-center" style="font-size: 36px;">
+                  <strong editable-number="timerDuration" e-form="timerDurationForm" onbeforesave="updateDuration($data)">{{timerHHMMSS}}</strong>
+                </div>
+
+                <div class="text-center">
+                  <div class="btn-group" role="group" aria-label="Controls">
+                    <button class="btn btn-default" ng-click="toggleTimer()">
+                      <span class="glyphicon glyphicon-play" ng-show="!timerRunning"></span>
+                      <span class="glyphicon glyphicon-pause" ng-show="timerRunning"></span>
+                    </button>
+                    <button class="btn btn-default" ng-click="resetTimer()">
+                      <span class="glyphicon glyphicon-repeat"></span>
+                    </button>
+                    <button class="btn btn-default" ng-click="timerDurationForm.$show()" ng-hide="timerDurationForm.$visible">
+                      <span class="glyphicon glyphicon-wrench"></span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- End timer widget -->
+
+            <!-- Start user listing -->
+            <div class="panel panel-primary" ng-controller="UserCtrl">
+              <div class="panel-heading">
+                <h3 class="panel-title">Users</h3>
+              </div>
+              <div class="panel-body">
+                <ul class="list-group">
+                  <li id="user-{{user.id}}" class="list-group-item" ng-repeat="user in users">
+                    <span class="glyphicon glyphicon-king" ng-if="user.moderator == true"></span>
+                    <span class="glyphicon glyphicon-pawn" ng-if="user.moderator !== true"></span>
+                    <span editable-text="user.name" onbeforesave="updateUser($data, user.id)" ng-if="user.myself == true">
+                      {{user.name}}
+                    </span>
+                    <span ng-if="user.myself !== true">
+                      {{user.name}}
+                    </span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <!-- End user listing -->
+
+          </div>
+          <!-- End left column-->
+
+          <!-- Start center column-->
+          <div class="col-md-6">
+
+            <!-- Start ticket widget-->
+            <div class="panel panel-primary" ng-controller="TicketCtrl">
+              <div class="panel-heading">
+                <h3 class="panel-title" ng-show="ticket.key">{{ticket.key}}</h3>
+                <h3 class="panel-title" ng-show="!ticket.key">Ticket</h3>
+              </div>
+              <div class="panel-body">
+                <div class="text-center" ng-show="waiting">
+                  <p><i>Waiting for ticket...</i></p>
+                </div>
+                <div ng-show="!waiting">
+
+                  <div class="ticket-details">
+                    <h4>Summary <span class="pull-right glyphicon glyphicon-pencil"></span></h4>
+                    <div ng-show="ticket.summary">{{ticket.summary}}</div>
+                    <div ng-show="!ticket.summary"><i>none</i></div>
+                  </div>
+
+                  <div class="ticket-details">
+                    <h4>Description <span class="pull-right glyphicon glyphicon-pencil"></span></h4>
+                    <div ng-show="ticket.description">{{ticket.description}}</div>
+                    <div ng-show="!ticket.description"><i>none</i></div>
+                  </div>
+
+                  <div class="ticket-details">
+                    <h4>Acceptance Criteria <span class="pull-right glyphicon glyphicon-pencil"></span></h4>
+                    <div ng-show="ticket.acceptance_criteria">{{ticket.acceptance_criteria}}</div>
+                    <div ng-show="!ticket.acceptance_criteria"><i>none</i></div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+            <!-- End ticket widget-->
+
+            <!-- Start votes widget-->
+            <div class="panel panel-primary" ng-controller="VotesCtrl">
+              <div class="panel-heading">
+                <h3 class="panel-title">Votes</h3>
+              </div>
+              <div class="panel-body text-center" style="min-height:200px;">
+
+                <div class="text-center" style="min-height:160px;">
+                <div class="card-rig card-in-play" title="vote.name" ng-repeat="vote in votes">
+                  <div class="card-wrapper perspective-wrapper">
+                    <div class="animation-wrapper">
+                      <div class="card-container face-down {{vote.cssClass}}">
+                        <div class="card card-back" ng-show="vote.value == null"></div>
+                        <div class="card card-face" ng-show="vote.value != null">
+                          <div class="text-center player-vote">
+                            <span ng-hide="vote.value != 'break'" class="ng-hide">
+                              <img height="50px" src="assets/img/Coffee_Mug_Full.svg">
+                            </span>
+                            <span ng-show="vote.value != 'break'" class="ng-binding">{{vote.value}}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div><i>{{vote.name}}</i></div>
+                </div>
+                </div>
+
+                <div class="text-center" style="margin-top: 10px;">
+                  <div id="vote-controls" class="btn-group" role="group" aria-label="Controls">
+                    <button type="button" class="btn btn-default" ng-click="toggleVoting()">
+                      <span class="glyphicon glyphicon-pause" ng-show="enabled"></span>
+                      <span class="glyphicon glyphicon-play" ng-show="!enabled"></span
+                    </button>
+                    <button type="button" class="btn btn-default" ng-click="toggleVisible()">
+                      <span class="glyphicon glyphicon-eye-open" ng-show="valuesVisible"></span>
+                      <span class="glyphicon glyphicon-eye-close" ng-show="!valuesVisible"></span>
+                    </button>
+                    <button type="button" class="btn btn-default" ng-click="reset()">
+                      <span class="glyphicon glyphicon-repeat"></span>
+                    </button>
+                  </div>
+                  <div class="input-group pull-right" style="width: 130px; padding-left: 10px;margin-left:-130px" ng-show="valuesVisible">
+                    <input type="number" step="1" class="form-control" ng-model="storyPoints">
+                    <div class="input-group-btn">
+                      <button class="btn btn-default" type="submit" ng-click="setStoryPoints()">
+                        <span class="glyphicon glyphicon-floppy-disk"></span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+            <!-- End votes widget-->
+
+          </div>
+          <!--End center column-->
+
+          <!--Start right column-->
+          <div class="col-md-3">
+
+            <!--Start jira widget-->
+            <div class="panel panel-primary" ng-controller="JiraCtrl">
+              <div class="panel-heading">
+                <h3 class="panel-title">Jira</h3>
+              </div>
+              <div class="panel-body">
+
+                <form novalidate class="form-horizontal" ng-show="state.configure">
+                  <div class="form-group">
+                    <label for="inputUsername" class="col-sm-2 control-label">
+                      <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                    </label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" ng-model="config.username" placeholder="Jira Username">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputPassword" class="col-sm-2 control-label">
+                      <span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
+                    </label>
+                    <div class="col-sm-10">
+                      <input type="password" class="form-control" ng-model="config.password" placeholder="Jira Password">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputBaseUrl" class="col-sm-2 control-label">
+                      <span class="glyphicon glyphicon-link" aria-hidden="true"></span>
+                    </label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" ng-model="config.base_url" placeholder="{{config.base_url}}">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                      <button type="submit" class="btn btn-default" ng-click="configure(config)">Log In</button>
+                    </div>
+                  </div>
+                </form>
+
+                <div ng-show="state.list">
+                  <form novalidate class="navbar-form" role="search" ng-show="state.list">
+                     <div class="input-group" style="width: 100%">
+                      <input type="text" class="form-control" placeholder="JQL" ng-model="config.jql">
+                      <div class="input-group-btn">
+                        <button class="btn btn-default" type="submit" ng-click="loadTickets(config)">
+                          <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                  <div id="jira-tickets">
+                    <ul class="list-group" ng-show="state.list">
+                      <li class="list-group-item" ng-repeat="ticket in tickets" ng-click="loadTicket(ticket)" ng-class="{'selected-ticket': ticket.selected}">
+                        {{ticket.key}}
+                        <span class="badge">{{ticket.story_points}}</span>
+                        <i>{{ticket.summary}}</i>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+            <!--End jira widget-->
+
+          </div>
+          <!--End right column-->
+
+        </div>
+        <!--End row-->
+
+      </div>
+      <!--End container-->
+
+      <div id="push"></div>
+    </div>
+    <!--End wrap-->
+
+    <div id="footer">
+      <div class="container">
+        <div class="row players-cards-container" ng-controller="CardsCtrl">
+          <div class="player-cards-wrapper admin" ng-show="enabled">
+
+            <div ng-repeat="card in cards" class="card-rig card-in-hand card-flipped" title="Play This Card" style="left: {{$index * 80}}px;" ng-click="cardSelect(card.value)">
+              <div class="card-wrapper perspective-wrapper">
+                <div class="animation-wrapper">
+                  <div class="card-container rotate face-up {{card.cssClass}}">
+                    <div class="card card-back"></div>
+                    <div class="card card-face">
+                      <div class="small-card-id">
+                        <span ng-hide="card.display!='break'" class="ng-hide">
+                          <img height="15px" src="assets/img/Coffee_Mug_Full.svg">
+                        </span>
+                        <span ng-show="card.display!='break'" class="ng-binding">{{card.display}}</span>
+                      </div>
+                      <div class="text-center player-vote">
+                        <span ng-hide="card.display!='break'" class="ng-hide">
+                          <img height="50px" src="assets/img/Coffee_Mug_Full.svg">
+                        </span>
+                        <span ng-show="card.display!='break'" class="ng-binding">{{card.display}}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AOPP</title>
+
+    <link rel="shortcut icon" href="assets/img/fav.ico" />
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="assets/js/html5shiv.min.js"></script>
+    <script type="text/javascript" src="assets/js/respond.min.js"></script>
+    <![endif]-->
+
+    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/xeditable.css"/>
+    <link rel="stylesheet" type="text/css" href="assets/css/angular-growl.css"/>
+    <link rel="stylesheet" type="text/css" href="assets/css/cards.css"/>
+    <link rel="stylesheet" type="text/css" href="assets/css/aopp.css"/>
+
+    <script type="text/javascript" src="assets/js/jquery-2.1.3.min.js"></script>
+    <script type="text/javascript" src="assets/js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="assets/js/TweenMax.min.js"></script>
+
+    <script type="text/javascript" src="assets/js/angular.min.js"></script>
+    <script type="text/javascript" src="assets/js/xeditable.js"></script>
+    <script type="text/javascript" src="assets/js/angular-growl.js"></script>
+    <script type="text/javascript" src="assets/js/angular-animate.js"></script>
+    <script type="text/javascript" src="assets/js/ng-websocket.js"></script>
+
+    <script type="text/javascript" src="assets/js/team-member.js"></script>
+  </head>
+  <body ng-app="team-member" style="margin: 5px;">
+    <div growl></div>
+
+    <div id="wrap">
+      <div class="container">
+        <div class="row">
+
+          <!-- Start left column-->
+          <div class="col-md-3">
+
+            <!-- Start timer widget -->
+            <div class="panel panel-primary" ng-controller="TimerCtrl">
+              <div class="panel-heading">
+                <h3 class="panel-title">Timer</h3>
+              </div>
+              <div class="panel-body">
+                <div class="text-center" style="font-size: 36px;">
+                  <strong>{{timerHHMMSS}}</strong>
+                </div>
+              </div>
+            </div>
+            <!-- End timer widget -->
+
+            <!-- Start user listing -->
+            <div class="panel panel-primary" ng-controller="UserCtrl">
+              <div class="panel-heading">
+                <h3 class="panel-title">Users</h3>
+              </div>
+              <div class="panel-body">
+                <ul class="list-group">
+                  <li id="user-{{user.id}}" class="list-group-item" ng-repeat="user in users">
+                    <span class="glyphicon glyphicon-king" ng-if="user.moderator == true"></span>
+                    <span class="glyphicon glyphicon-pawn" ng-if="user.moderator !== true"></span>
+                    <span editable-text="user.name" onbeforesave="updateUser($data, user.id)" ng-if="user.myself == true">
+                      {{user.name}}
+                    </span>
+                    <span ng-if="user.myself !== true">
+                      {{user.name}}
+                    </span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <!-- End user listing -->
+
+          </div>
+          <!-- End left column-->
+
+          <!-- Start center column-->
+          <div class="col-md-9">
+
+            <!-- Start ticket widget-->
+            <div class="panel panel-primary" ng-controller="TicketCtrl">
+              <div class="panel-heading">
+                <h3 class="panel-title" ng-show="ticket.key">{{ticket.key}}</h3>
+                <h3 class="panel-title" ng-show="!ticket.key">Ticket</h3>
+              </div>
+              <div class="panel-body">
+                <div class="text-center" ng-show="waiting">
+                  <p><i>Waiting for ticket...</i></p>
+                </div>
+                <div ng-show="!waiting">
+
+                  <div class="ticket-details">
+                    <h4>Summary</h4>
+                    <div ng-show="ticket.summary">{{ticket.summary}}</div>
+                    <div ng-show="!ticket.summary"><i>none</i></div>
+                  </div>
+
+                  <div class="ticket-details">
+                    <h4>Description</h4>
+                    <div ng-show="ticket.description">{{ticket.description}}</div>
+                    <div ng-show="!ticket.description"><i>none</i></div>
+                  </div>
+
+                  <div class="ticket-details">
+                    <h4>Acceptance Criteria</h4>
+                    <div ng-show="ticket.acceptance_criteria">{{ticket.acceptance_criteria}}</div>
+                    <div ng-show="!ticket.acceptance_criteria"><i>none</i></div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+            <!-- End ticket widget-->
+
+            <!-- Start votes widget-->
+            <div class="panel panel-primary" ng-controller="VotesCtrl">
+              <div class="panel-heading">
+                <h3 class="panel-title">Votes</h3>
+              </div>
+              <div class="panel-body text-center" style="min-height:200px;">
+
+                <div class="card-rig card-in-play" title="vote.name" ng-repeat="vote in votes">
+                  <div class="card-wrapper perspective-wrapper">
+                    <div class="animation-wrapper">
+                      <div class="card-container face-down {{vote.cssClass}}">
+                        <div class="card card-back" ng-show="vote.value == null"></div>
+                        <div class="card card-face" ng-show="vote.value != null">
+                          <div class="text-center player-vote">
+                            <span ng-hide="vote.value != 'break'" class="ng-hide">
+                              <img height="50px" src="assets/img/Coffee_Mug_Full.svg">
+                            </span>
+                            <span ng-show="vote.value != 'break'">{{vote.value}}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div><i>{{vote.name}}</i></div>
+                </div>
+
+              </div>
+            </div>
+            <!-- End votes widget-->
+
+          </div>
+          <!--End center column-->
+
+        </div>
+        <!--End row-->
+
+      </div>
+      <!--End container-->
+
+      <div id="push"></div>
+    </div>
+    <!--End wrap-->
+
+    <div id="footer">
+      <div class="container">
+        <div class="row players-cards-container" ng-controller="CardsCtrl">
+          <div class="player-cards-wrapper" ng-show="enabled">
+
+            <div ng-repeat="card in cards" class="card-rig card-in-hand card-flipped" title="Play This Card" style="left: {{$index * 80}}px;" ng-click="cardSelect(card.value)">
+              <div class="card-wrapper perspective-wrapper">
+                <div class="animation-wrapper">
+                  <div class="card-container rotate face-up {{card.cssClass}}">
+                    <div class="card card-back"></div>
+                    <div class="card card-face">
+                      <div class="small-card-id">
+                        <span ng-hide="card.display != 'break'">
+                          <img height="15px" src="assets/img/Coffee_Mug_Full.svg">
+                        </span>
+                        <span ng-show="card.display != 'break'">{{card.display}}</span>
+                      </div>
+                      <div class="text-center player-vote">
+                        <span ng-hide="card.display != 'break'">
+                          <img height="50px" src="assets/img/Coffee_Mug_Full.svg">
+                        </span>
+                        <span ng-show="card.display != 'break'">{{card.display}}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </body>
+</html>

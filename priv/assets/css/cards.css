@@ -1,0 +1,160 @@
+.card-rig {
+    width: 100px;
+    text-align: center;
+}
+.card-rig.empty-card,
+.card-rig.card-in-play {
+    display: inline-block;
+    margin-right: 10px;
+}
+.card-rig.card-in-deck {
+    height: 140px;
+}
+.card-rig .perspective-wrapper {
+    perspective: 700px;
+    perspective-origin: 50% 50%;
+}
+.card-in-play .card-back {
+    background-image: url('../img/logo-cloudwhite-cardback.svg');
+    background-color: #656565;
+    border: 2px solid #515151;
+}
+.card-in-play .card-face {
+    color: #fff;
+    background-image: none;
+}
+.card-in-play.card-flipped .card-container {
+    -webkit-transform: rotateY(180deg);
+    -moz-transform: rotateY(180deg);
+    -ms-transform: rotateY(180deg);
+    -o-transform: rotateY(180deg);
+    transform: rotateY(180deg);
+}
+.card-wrapper {
+    position: relative;
+    width: 100px;
+    height: 140px;
+    z-index: 1;
+}
+.card-container {
+    width: 100px;
+    height: 140px;
+    border-radius: 10px;
+}
+.card {
+    -webkit-border-radius: 10px;
+    -webkit-background-clip: padding-box;
+    -moz-border-radius: 10px;
+    -moz-background-clip: padding;
+    border-radius: 10px;
+    background-clip: padding-box;
+    text-align: center;
+    width: 100px;
+    height: 140px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    font-family: 'robotobold', sans-serif;
+    font-weight: 700;
+    color: #fff;
+    -webkit-transform: scale(1);
+    -moz-transform: scale(1);
+    -ms-transform: scale(1);
+    -o-transform: scale(1);
+    transform: scale(1);
+    -webkit-transition: -webkit-transform 100ms ease-in-out;
+    -moz-transition: -moz-transform 100ms ease-in-out;
+    -o-transition: -o-transform 100ms ease-in-out;
+    transition: -webkit-transform 100ms ease-in-out,-moz-transform 100ms ease-in-out,-o-transform 100ms ease-in-out,transform 100ms ease-in-out;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+.card-green .card-face {
+    background-color: #6ba800;
+    border: 2px solid #375600;
+}
+.card-green .card-face .hover {
+    background-color: #78bc00;
+}
+.card-blue .card-face {
+    background-color: #0e82d2;
+    border: 2px solid #095385;
+}
+.card-blue .card-face .hover {
+    background-color: #0f8ee5;
+}
+.card-orange .card-face {
+    background-color: #fb8800;
+    border: 2px solid #a95c00;
+}
+.card-orange .card-face .hover {
+    background-color: #ff9210;
+}
+.card-drk-grey .card-face {
+    background-color: #2d2d2d;
+    border: 2px solid #040404;
+}
+.card-drk-grey .card-face .hover {
+    background-color: #373737;
+}
+.card-drk-grey .card-face .player-vote {
+    font-size: 37px;
+}
+.card-grey .card-face {
+    background-color: #656565;
+    border: 2px solid #3c3c3c;
+}
+.card-grey .card-face .hover {
+    background-color: #c5c5c5;
+}
+.card-face .player-vote {
+    font-size: 40px;
+    position: relative;
+    padding-top: 34px;
+}
+.players-cards-container {
+    height: 140px;
+}
+.players-cards-container .card:hover {
+    cursor: pointer;
+}
+.small-card-id {
+    float: left;
+    padding-left: 7px;
+    position: absolute;
+}
+.player-cards-wrapper {
+    position: relative;
+    padding: 20px;
+    padding-bottom: 0;
+}
+.card-in-hand {
+    position: absolute;
+    left: 0;
+}
+.card-in-hand.card-flipped .animation-wrapperssss {
+    -webkit-transform: rotateY(180deg);
+    -moz-transform: rotateY(180deg);
+    -ms-transform: rotateY(180deg);
+    -o-transform: rotateY(180deg);
+    transform: rotateY(180deg);
+}
+.card-in-hand:hover .card-container,
+.card-in-hand.selected .card-container {
+    -webkit-transform: scale(1.2);
+    -moz-transform: scale(1.2);
+    -ms-transform: scale(1.2);
+    -o-transform: scale(1.2);
+    transform: scale(1.2);
+}
+.card-in-hand .card-container {
+    -webkit-transition: -webkit-transform 0.3s ease;
+    -moz-transition: -moz-transform 0.3s ease;
+    -o-transition: -o-transform 0.3s ease;
+    transition: -webkit-transform 0.3s ease,-moz-transform 0.3s ease,-o-transform 0.3s ease,transform 0.3s ease;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
